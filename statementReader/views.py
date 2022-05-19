@@ -19,12 +19,28 @@ from .models import WithholdingTax
 from .models import InterestAccruals                               
 from .models import BaseCurrencyExchangeRate  
 from .models import RegisteredStatement
-
-
+from .form import DocumentForm
 
 def index(request):
 
-    folder_path = "./statementReader/statement"                # Get all the statement name in folder
+    form = DocumentForm()
+    if request.method == 'POST':
+        form = DocumentForm(request.POST, request.FILES)
+        if form.is_valid():
+
+            form.save()
+            post_upload()
+  
+    context = {"form": form,}
+    return render( request,'statementReader/uploadPage.html',context)
+
+
+
+
+
+def post_upload():
+# 
+    folder_path = "./media/statement"                # Get all the statement name in folder
     folder_files = listdir(folder_path)
 
     a = RegisteredStatement.objects.values_list('filename')    # Get statement name in database
@@ -52,7 +68,7 @@ def index(request):
     else:        
         for f in range(len(files)):
             filename = files[f]
-            filelocation = "Users/waishunwong/Library/Mobile Documents/com~apple~CloudDocs/github/IBStatementManager/statementReader/statement/"
+            filelocation = "Users/waishunwong/Library/Mobile Documents/com~apple~CloudDocs/github/IBStatementManager/media/statement/"
             Url = "file:///"+filelocation
             regStatement = RegisteredStatement()
             regStatement.saveStatement(Url,filename)

@@ -700,6 +700,17 @@ class RegisteredStatement(models.Model):
         return self.filename
 
 
+
+
+class Document(models.Model):
+    document = models.FileField(upload_to='statement/')
+    uploaded_at = models.DateTimeField(default=datetime.now)
+
+
+
+
+
+
 def BSString(d):
     return str(d.string).strip()
 

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+{% extends "extends/base.html"%} 
+
+{% block body_block %}  
+  <form method="POST" enctype="multipart/form-data">
+    <!-- Very Important csrf Token -->
+    {% csrf_token %}
+    <table>
+        {{ form.as_table }}
+    </table>
+    <input type="submit" class="btn btn-primary btn-lg" name="register">
+  </form>
+
+{% endblock %}
